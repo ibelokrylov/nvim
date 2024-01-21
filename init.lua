@@ -823,6 +823,15 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
+local function organize_imports()
+  local params = {
+    command = '_typescript.organizeImports',
+    arguments = { vim.api.nvim_buf_get_name(0) },
+    title = '',
+  }
+  vim.lsp.buf.execute_command(params)
+end
+
 mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
@@ -830,6 +839,12 @@ mason_lspconfig.setup_handlers {
       on_attach = on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
+      commands = {
+        OrganizeImports = {
+          organize_imports,
+          description = 'Organize Imports',
+        },
+      },
     }
   end,
 }
@@ -915,17 +930,17 @@ keymap.set('n', '<Leader>O', 'O<Esc>^Da', opts)
 keymap.set('n', '<C-m>', '<C-i>', opts)
 
 -- New tab
-keymap.set('n', 'te', ':tabedit')
+keymap.set('n', 'te', ':tabedit<Return>')
 keymap.set('n', '<tab>', ':tabnext<Return>', opts)
 keymap.set('n', '<s-tab>', ':tabprev<Return>', opts)
 -- Split window
 keymap.set('n', 'ss', ':split<Return>', opts)
 keymap.set('n', 'sv', ':vsplit<Return>', opts)
 -- Move window
-keymap.set('n', 'sh', '<C-w>h')
-keymap.set('n', 'sk', '<C-w>k')
-keymap.set('n', 'sj', '<C-w>j')
-keymap.set('n', 'sl', '<C-w>l')
+keymap.set('n', 's<Left>', '<C-w>h')
+keymap.set('n', 's<Up>', '<C-w>k')
+keymap.set('n', 's<Down>', '<C-w>j')
+keymap.set('n', 's<Right>', '<C-w>l')
 
 -- Resize window
 keymap.set('n', '<C-w><left>', '<C-w><')
@@ -937,6 +952,12 @@ keymap.set('n', '<C-w><down>', '<C-w>-')
 keymap.set('n', '<C-j>', function()
   vim.diagnostic.goto_next()
 end, opts)
+
+-- OrganizeImports
+keymap.set('n', '<Leader>oi', ':OrganizeImports<Return>')
+
+-- Show imports
+keymap.set('n', '<space>.', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 
 keymap.set('n', '<leader>rn', function()
   return ':IncRename ' .. vim.fn.expand '<cword>'
