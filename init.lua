@@ -236,8 +236,30 @@ require('lazy').setup({
   --     vim.cmd.colorscheme 'onedark'
   --   end,
   -- },
-
-  { 'bluz71/vim-nightfly-colors', name = 'nightfly', lazy = false, priority = 1000 },
+  -- {
+  --   'rebelot/kanagawa.nvim',
+  --   config = function()
+  --     vim.cmd.colorscheme 'kanagawa'
+  --   end,
+  -- },
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {},
+  --   config = function()
+  --     vim.cmd.colorscheme = 'tokyonight-moon'
+  --   end,
+  -- },
+  {
+    'bluz71/vim-nightfly-colors',
+    name = 'nightfly',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme = 'nightfly'
+    end,
+  },
 
   {
     -- Set lualine as statusline
@@ -246,7 +268,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'nightfly',
         component_separators = '|',
         section_separators = '',
       },
@@ -317,10 +339,24 @@ require('lazy').setup({
         desc = 'Lists files in your current working directory, respects .gitignore',
       },
       {
+        '<leader>f',
+        function()
+          local builtin = require 'telescope.builtin'
+          builtin.find_files {
+            no_ignore = true,
+            hidden = true,
+          }
+        end,
+        desc = 'Lists files in your current working directory, respects .gitignore',
+      },
+
+      {
         ';r',
         function()
           local builtin = require 'telescope.builtin'
-          builtin.live_grep()
+          builtin.live_grep {
+            no_ignore = true,
+          }
         end,
         desc = 'Search for a string in your current working directory and get results live as you type, respects .gitignore',
       },
@@ -476,7 +512,7 @@ require('lazy').setup({
   { import = 'lazyvim.plugins.extras.lang.tailwind' },
   { import = 'lazyvim.plugins.extras.coding.copilot' },
   -- { import = "lazyvim.plugins.extras.dap.core" },
-  -- { import = "lazyvim.plugins.extras.vscode" },
+  { import = 'lazyvim.plugins.extras.vscode' },
   { import = 'lazyvim.plugins.extras.util.mini-hipatterns' },
   -- { import = "lazyvim.plugins.extras.test.core" },
   -- { import = "lazyvim.plugins.extras.coding.yanky" },
@@ -962,3 +998,6 @@ keymap.set('n', '<space>.', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 keymap.set('n', '<leader>rn', function()
   return ':IncRename ' .. vim.fn.expand '<cword>'
 end, { expr = true })
+
+-- Go to previous file
+keymap.set('n', '<leader>[', '<C-^>')
