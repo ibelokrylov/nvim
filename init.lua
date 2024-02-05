@@ -118,7 +118,7 @@ require('lazy').setup({
     'akinsho/bufferline.nvim',
     event = 'VeryLazy',
     keys = {
-      { '<Tab>', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next tab' },
+      { ';<Tab>', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next tab' },
       { '<S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Prev tab' },
     },
     opts = {
@@ -510,7 +510,7 @@ require('lazy').setup({
   -- { import = "lazyvim.plugins.extras.lang.markdown" },
   { import = 'lazyvim.plugins.extras.lang.rust' },
   { import = 'lazyvim.plugins.extras.lang.tailwind' },
-  { import = 'lazyvim.plugins.extras.coding.copilot' },
+  -- { import = 'lazyvim.plugins.extras.coding.copilot' },
   -- { import = "lazyvim.plugins.extras.dap.core" },
   { import = 'lazyvim.plugins.extras.vscode' },
   { import = 'lazyvim.plugins.extras.util.mini-hipatterns' },
