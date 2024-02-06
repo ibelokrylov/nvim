@@ -251,20 +251,25 @@ require('lazy').setup({
   --     vim.cmd.colorscheme = 'tokyonight-moon'
   --   end,
   -- },
+  {
+    'bluz71/vim-nightfly-colors',
+    name = 'nightfly',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme = 'nightfly'
+    end,
+  },
   -- {
-  --   'bluz71/vim-nightfly-colors',
-  --   name = 'nightfly',
-  --   lazy = false,
+  --   'catppuccin/nvim',
+  --   name = 'catppuccin',
   --   priority = 1000,
   --   config = function()
-  --     vim.cmd.colorscheme = 'nightfly'
+  --     require('catppuccin').setup {
+  --       flavour = 'mocha',
+  --     }
   --   end,
   -- },
-  {
-    'catppuccin/nvim',
-    name = 'catppuccin',
-    priority = 1000,
-  },
 
   {
     -- Set lualine as statusline
@@ -504,6 +509,7 @@ require('lazy').setup({
         lazyvim = true,
         neovim = true,
       },
+      colorscheme = 'nightfly',
     },
   },
   -- import any extras modules here
@@ -546,7 +552,7 @@ require('lazy').setup({
 vim.o.hlsearch = false
 
 -- Make line numbers default
-vim.wo.number = true
+vim.wo.relativenumber = false
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
