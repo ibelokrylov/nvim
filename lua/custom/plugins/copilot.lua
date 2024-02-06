@@ -4,7 +4,7 @@ return {
     vim.g.copilot_no_tab_map = true
   end,
   config = function()
-    vim.keymap.set('i', 'e<Tab>', [[copilot#Accept("\<CR>")]], {
+    vim.keymap.set('i', '\\<Tab>', [[copilot#Accept("\<CR>")]], {
       silent = true,
       expr = true,
       script = true,
