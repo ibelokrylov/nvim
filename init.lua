@@ -33,6 +33,14 @@ require('lazy').setup({
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
     },
+
+    opts = {
+      setup = {
+        rust_analyzer = function()
+          return true
+        end,
+      },
+    },
   },
 
   {
@@ -50,6 +58,11 @@ require('lazy').setup({
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
     },
+  },
+
+  {
+    'Exafunction/codeium.vim',
+    event = 'BufEnter',
   },
 
   -- Useful plugin to show you pending keybinds.
@@ -106,13 +119,23 @@ require('lazy').setup({
   --     vim.cmd.colorscheme 'solarized-osaka'
   --   end,
   -- },
-  {
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
-  },
+  -- {
+  --   'navarasu/onedark.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
+  -- {
+  --   'Mofiqul/vscode.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     require('vscode').setup {
+  --       transparent = true,
+  --     }
+  --     vim.cmd.colorscheme 'vscode'
+  --   end,
+  -- },
   -- {
   --   'catppuccin/nvim',
   --   name = 'catppuccin',
@@ -121,6 +144,7 @@ require('lazy').setup({
   --     require('catppuccin').setup {
   --       flavour = 'mocha',
   --     }
+  --     vim.cmd.colorscheme 'catppuccino'
   --   end,
   -- },
 
