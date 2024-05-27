@@ -762,6 +762,9 @@ keymap.set('n', '<C-w><right>', '<C-w>>')
 keymap.set('n', '<C-w><up>', '<C-w>+')
 keymap.set('n', '<C-w><down>', '<C-w>-')
 
+-- Nvim-tree
+keymap.set('n', '<leader>e', ':NvimTreeToggle<Return>', opts)
+
 -- Diagnostics
 keymap.set('n', '<C-j>', function()
   vim.diagnostic.goto_next()
