@@ -106,48 +106,6 @@ require('lazy').setup({
     end,
   },
 
-  -- {
-  --   'craftzdog/solarized-osaka.nvim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   opts = function()
-  --     return {
-  --       transparent = true,
-  --     }
-  --   end,
-  --   config = function()
-  --     vim.cmd.colorscheme 'solarized-osaka'
-  --   end,
-  -- },
-  -- {
-  --   'navarasu/onedark.nvim',
-  --   priority = 1000,
-  --   config = function()
-  --     vim.cmd.colorscheme 'onedark'
-  --   end,
-  -- },
-  -- {
-  --   'Mofiqul/vscode.nvim',
-  --   priority = 1000,
-  --   config = function()
-  --     require('vscode').setup {
-  --       transparent = true,
-  --     }
-  --     vim.cmd.colorscheme 'vscode'
-  --   end,
-  -- },
-  -- {
-  --   'catppuccin/nvim',
-  --   name = 'catppuccin',
-  --   priority = 1000,
-  --   config = function()
-  --     require('catppuccin').setup {
-  --       flavour = 'mocha',
-  --     }
-  --     vim.cmd.colorscheme 'catppuccino'
-  --   end,
-  -- },
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
