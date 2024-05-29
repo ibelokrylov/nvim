@@ -63,6 +63,11 @@ require('lazy').setup({
   {
     'Exafunction/codeium.vim',
     event = 'BufEnter',
+    config = function()
+      vim.keymap.set('i', '§', function()
+        return vim.fn['codeium#Accept']()
+      end, { expr = true, silent = true })
+    end,
   },
 
   -- Useful plugin to show you pending keybinds.
@@ -70,10 +75,6 @@ require('lazy').setup({
   {
     'akinsho/bufferline.nvim',
     event = 'VeryLazy',
-    keys = {
-      { ';<Tab>', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next tab' },
-      { '<S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Prev tab' },
-    },
     opts = {
       options = {
         mode = 'tabs',
@@ -82,6 +83,73 @@ require('lazy').setup({
         show_close_icon = false,
       },
     },
+  },
+  -- Color scheme
+  {
+    'folke/tokyonight.nvim',
+    config = function()
+      local handle = io.popen 'defaults read -g AppleInterfaceStyle'
+      local result = handle:read '*a'
+      handle:close()
+
+      if result:match 'Dark' then
+        -- Установить темную тему
+        vim.cmd 'colorscheme tokyonight'
+        require('tokyonight').setup {
+          -- другие настройки конфигурации
+          style = 'storm', -- Этот параметр будет переопределен функцией set_theme
+          transparent = true,
+          styles = {
+            comments = { italic = true },
+            keywords = { italic = true },
+            functions = {},
+            variables = {},
+            sidebars = 'transparent',
+            floats = 'transparent',
+          },
+          hide_inactive_statusline = false,
+          dim_inactive = false,
+          lualine_bold = false,
+          on_colors = function(colors) end,
+          on_highlights = function(highlights, colors) end,
+        }
+      else
+        -- Установить светлую тему
+        require('tokyonight').setup {
+          -- другие настройки конфигурации
+          style = 'day', -- Этот параметр будет переопределен функцией set_theme
+          transparent = true,
+          styles = {
+            comments = { italic = true },
+            keywords = { italic = true },
+            functions = {},
+            variables = {},
+            sidebars = 'transparent',
+            floats = 'transparent',
+          },
+          hide_inactive_statusline = false,
+          dim_inactive = false,
+          lualine_bold = false,
+          on_colors = function(colors) end,
+          on_highlights = function(highlights, colors) end,
+        }
+      end
+      -- Добавить ваши настройки подсветки
+      vim.cmd 'highlight Normal guibg=None guifg=None'
+      vim.cmd 'highlight NonText guibg=None guifg=None'
+      vim.cmd 'highlight SignColumn guibg=None guifg=None'
+      vim.cmd 'highlight WinSeparator guibg=#24283b guifg=#24283b'
+      vim.cmd 'highlight NeoTreeIndentMarker guifg=#3c4260'
+      vim.cmd 'highlight NeoTreeDimText guifg=#24283b'
+      vim.cmd 'highlight NeoTreeWinSeparator guibg=None'
+      vim.cmd 'highlight NeoTreeTabInactive guifg=#565d89'
+      vim.cmd 'highlight NeoTreeTabSeparatorInactive guifg=#24283b'
+      vim.cmd 'highlight NeoTreeTabSeparatorActive guifg=#24283b'
+      vim.cmd 'highlight NeoTreeNormal guibg=None'
+      vim.cmd 'highlight NeoTreeNormalNC guibg=None'
+      vim.cmd 'highlight NeoTreeWinSeparator guibg=None guifg=None'
+      vim.cmd 'highlight NeoTreeVertSplit guibg=None guifg=None'
+    end,
   },
   {
     'b0o/incline.nvim',
@@ -160,18 +228,6 @@ require('lazy').setup({
         end,
         desc = 'Lists files in your current working directory, respects .gitignore',
       },
-      {
-        '<leader>f',
-        function()
-          local builtin = require 'telescope.builtin'
-          builtin.find_files {
-            no_ignore = true,
-            hidden = true,
-          }
-        end,
-        desc = 'Lists files in your current working directory, respects .gitignore',
-      },
-
       {
         ';r',
         function()
@@ -721,7 +777,7 @@ keymap.set('n', '<C-w><up>', '<C-w>+')
 keymap.set('n', '<C-w><down>', '<C-w>-')
 
 -- Nvim-tree
-keymap.set('n', '<leader>e', ':NvimTreeToggle<Return>', opts)
+keymap.set('n', '<leader>e', ':NvimTreeFocus<Return>', opts)
 
 -- Diagnostics
 keymap.set('n', '<C-j>', function()
@@ -731,12 +787,37 @@ end, opts)
 -- OrganizeImports
 keymap.set('n', '<Leader>oi', ':OrganizeImports<Return>')
 
--- Show imports
-keymap.set('n', '<space>.', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-
 keymap.set('n', '<leader>rn', function()
   return ':IncRename ' .. vim.fn.expand '<cword>'
 end, { expr = true })
 
 -- Go to previous file
 keymap.set('n', '<leader>[', '<C-^>')
+
+local map = vim.keymap.set
+-- Switch to the next buffer
+map('n', '<Leader><right>', ':bn<CR>', opts)
+
+-- Switch to the previous buffer
+map('n', '<Leader><left>', ':bp<CR>', opts)
+
+-- Go to previous file
+keymap.set('n', '<leader>[', '<C-^>')
+
+vim.keymap.set('i', '<leader><Tab>', function()
+  return vim.fn['codeium#Accept']()
+end, { expr = true, silent = true })
+
+-- Vertical split
+map('n', '<Leader>2', ':vsplit<CR>', opts)
+
+-- Close current buffer
+map('n', '<Leader>w', ':Bdelete<CR>', opts)
+
+map('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', opts)
+map('n', '<leader>g', '<cmd>lua require("telescope.builtin").git_files()<cr>', opts)
+map('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>', opts)
+map('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>', opts)
+map('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>', opts)
+map('n', '<leader>k', '<cmd>lua require("telescope.builtin").oldfiles()<cr>', opts)
+map('n', '<leader>ca', '<cmd>lua require("telescope.builtin").lsp_code_actions(require("telescope.themes").get_cursor())<cr>', opts)
