@@ -209,15 +209,6 @@ require('lazy').setup({
     },
     keys = {
       {
-        '<leader>fP',
-        function()
-          require('telescope.builtin').find_files {
-            cwd = require('lazy.core.config').options.root,
-          }
-        end,
-        desc = 'Find Plugin File',
-      },
-      {
         ';f',
         function()
           local builtin = require 'telescope.builtin'
@@ -358,6 +349,15 @@ require('lazy').setup({
       telescope.setup(opts)
       require('telescope').load_extension 'fzf'
       require('telescope').load_extension 'file_browser'
+      -- Slightly advanced example of overriding default behavior and theme
+      vim.keymap.set('n', '<leader>/', function()
+        local builtin = require 'telescope.builtin'
+        -- You can pass additional configuration to Telescope to change the theme, layout, etc.
+        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+          winblend = 10,
+          previewer = false,
+        })
+      end, { desc = '[/] Fuzzily search in current buffer' })
     end,
   },
 
@@ -750,10 +750,6 @@ keymap.set('n', '<C-a>', 'gg<S-v>G')
 -- Save with root permission (not working for now)
 --vim.api.nvim_create_user_command('W', 'w !sudo tee > /dev/null %', {})
 
--- Disable continuations
-keymap.set('n', '<Leader>o', 'o<Esc>^Da', opts)
-keymap.set('n', '<Leader>O', 'O<Esc>^Da', opts)
-
 -- Jumplist
 keymap.set('n', '<C-m>', '<C-i>', opts)
 
@@ -776,9 +772,6 @@ keymap.set('n', '<C-w><right>', '<C-w>>')
 keymap.set('n', '<C-w><up>', '<C-w>+')
 keymap.set('n', '<C-w><down>', '<C-w>-')
 
--- Nvim-tree
-keymap.set('n', '<leader>e', ':NvimTreeFocus<Return>', opts)
-
 -- Diagnostics
 keymap.set('n', '<C-j>', function()
   vim.diagnostic.goto_next()
@@ -794,30 +787,5 @@ end, { expr = true })
 -- Go to previous file
 keymap.set('n', '<leader>[', '<C-^>')
 
-local map = vim.keymap.set
--- Switch to the next buffer
-map('n', '<Leader><right>', ':bn<CR>', opts)
-
--- Switch to the previous buffer
-map('n', '<Leader><left>', ':bp<CR>', opts)
-
--- Go to previous file
-keymap.set('n', '<leader>[', '<C-^>')
-
-vim.keymap.set('i', '<leader><Tab>', function()
-  return vim.fn['codeium#Accept']()
-end, { expr = true, silent = true })
-
--- Vertical split
-map('n', '<Leader>2', ':vsplit<CR>', opts)
-
--- Close current buffer
-map('n', '<Leader>w', ':Bdelete<CR>', opts)
-
-map('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>', opts)
-map('n', '<leader>g', '<cmd>lua require("telescope.builtin").git_files()<cr>', opts)
-map('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>', opts)
-map('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>', opts)
-map('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>', opts)
-map('n', '<leader>k', '<cmd>lua require("telescope.builtin").oldfiles()<cr>', opts)
-map('n', '<leader>ca', '<cmd>lua require("telescope.builtin").lsp_code_actions(require("telescope.themes").get_cursor())<cr>', opts)
+keymap.set('n', '=', ':resize +5<CR>')
+keymap.set('n', '-', ':resize -5<CR>')
